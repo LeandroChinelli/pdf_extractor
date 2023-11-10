@@ -13,7 +13,8 @@ class ExtractionPDF:
         data_dates = []
         data_values = []
         data_places = []
-        
+        data_list = []
+
         with open(pdf_path, 'rb') as file:
             pdf_reader = PyPDF2.PdfReader(file, strict=False)
 
@@ -21,10 +22,12 @@ class ExtractionPDF:
                 text = page.extract_text()
                 text = self.clean.text_cleaninig(text)
                 dates,values, places = self.extract.regex_extraction(text)
-
+                data_list_i = [dates, values, places]    
+                data_list.append(data_list_i)
                 data_dates.append(dates)
                 data_values.append(values)
                 data_places.append(places)
-                print(text)
+                
+        print(data_list)
 
         return data_dates, data_values, data_places
