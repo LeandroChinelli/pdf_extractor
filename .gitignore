@@ -1,6 +1,7 @@
 
 # User cases
-./*.profile_default
+./*.pdf
+./*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
