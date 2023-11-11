@@ -1,3 +1,7 @@
+
+# User cases
+./*.profile_default
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
