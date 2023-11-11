@@ -28,6 +28,4 @@ class ExtractionPDF:
                 data_values.append(values)
                 data_places.append(places)
                 
-        print(data_list)
-
         return data_dates, data_values, data_places
