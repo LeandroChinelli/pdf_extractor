@@ -31,7 +31,7 @@ class TextCleaning:
     
     def remove_non_alphanum(self, text):
         # Remove all non-alphanumeric characters except $
-        text = re.sub(self.regex.NON_APLHANUM_PATTERS, 'w', text)
+        text = re.sub(self.regex.NON_APLHANUM_PATTERS, '', text)
         return text
 
     @staticmethod

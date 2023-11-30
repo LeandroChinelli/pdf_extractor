@@ -1,13 +1,23 @@
-from text_modeling import ExtractionPDF
+from text_modeling import ExtractionPDF, FilePath, Constants
+import os
+import pandas as pd
 
-pdf_path = '/home/leandrochinelli/repos/faturanovembro.pdf'
-extractor = ExtractionPDF()
-dates, values, places = extractor.extract_pdf(pdf_path)
+files_obj = FilePath()
+files = files_obj.get_files()
 
-flat_dates = [item for sublist in dates for item in sublist]
-flat_values = [item for sublist in values for item in sublist]
-flat_places = [item for sublist in places for item in sublist]
+df_fatura = pd.DataFrame()
 
-# print((flat_dates))
-# print(len(flat_values ))
-print((flat_places))
+for file in files:
+    extractor = ExtractionPDF()
+    df = extractor.extract_pdf(file[0])
+    df['fatura'] = file[1][:6]
+    df_fatura = pd.concat((df_fatura, df))
+
+df_fatura = df_fatura[~df_fatura['places'].str.contains(Constants.TOTAL_VALUE)]
+
+payment_condition = (df['places'].str.contains(f'{Constants.REGULAR_PAYMENT}|{Constants.ONLINE_PAYMENT}'))
+df.loc[payment_condition, 'values'] *= -1
+
+
+
+df_fatura.to_csv('faturas.csv', index=False)
