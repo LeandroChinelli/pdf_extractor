@@ -17,7 +17,7 @@ for file in files:
 df_fatura = df_fatura[~df_fatura['places'].str.contains(Constants.TOTAL_VALUE)]
 
 payment_condition = (df['places'].str.contains(f'{Constants.REGULAR_PAYMENT}|{Constants.ONLINE_PAYMENT}'))
-df.loc[payment_condition, 'values'] *= -1
+df_fatura.loc[payment_condition, 'values'] *= -1
 df_fatura = df_fatura.merge(df_categories, on='places', validate='m:1')
 
 df_fatura.to_csv('faturas.csv', index=False)
