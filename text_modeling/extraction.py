@@ -13,7 +13,6 @@ class ExtractionPDF:
     def extract_pdf(self, pdf_path: str) -> DataFrame:
         
         dates_list, values_list, places_list = self.extract_text_to_list(pdf_path)
-        
         dates = self.organized_dates(dates_list)
         values = self.organized_values(values_list)
         places = self.organized_places(places_list)
@@ -49,6 +48,7 @@ class ExtractionPDF:
         data_dates = []
         data_values = []
         data_places = []
+        data_values_to_exclude = []
 
         with open(pdf_path, 'rb') as file:
             pdf_reader = PyPDF2.PdfReader(file, strict=False)
@@ -63,10 +63,21 @@ class ExtractionPDF:
                        ):
                     text = page.extract_text()
                     text = self.clean.text_cleaninig(text)
-                    dates,values, places = self.extract.regex_extraction(text)
+                    dates,values, places, values_to_exclude = self.extract.regex_extraction(text)
                     data_dates.append(dates)
-                    data_values.append(values)
                     data_places.append(places)
+                    
+                    data_values.append(values)
+                    data_values_to_exclude.append(values_to_exclude)
+                    data_values_to_exclude =  [str(value).replace("COTACAODODOLARAMERICANO", "")
+                                                         .replace("[", "")
+                                                         .replace("]", "")
+                                                         .replace("'", "")  for value in data_values_to_exclude]
+                    data_values_to_exclude = [value for value in data_values_to_exclude if value]
                 else: 
                     continue
+
+        for i in data_values_to_exclude:
+            data_values = [[value for value in sublist if value != i ] for sublist in data_values]
+
         return data_dates, data_values, data_places
