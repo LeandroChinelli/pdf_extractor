@@ -10,7 +10,7 @@ class RegexPatterns:
 
 class FilePath:
     def __init__(self):
-        self.files = self.get_all_files(f'{os.getcwd()}\\faturas\\')
+        self.files = self.get_all_files(f'{os.getcwd()}\\credit_card_receipt\\')
 
     def get_all_files(self, folder_path):
         files = []
